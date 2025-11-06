@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Materi Inventori Barang - DDL & DML</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 1rem;
+        }
+
+        pre {
+            background: #212529;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <div class="text-center mb-4">
+            <h1 class="fw-bold text-success">Materi DDL & DML</h1>
+            <p class="text-muted">CREATE, ALTER, DROP, INSERT, UPDATE, DELETE</p>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h4 class="card-title text-success">1️⃣ Konsep Singkat</h4>
+                <p><strong>DDL (Data Definition Language)</strong> digunakan untuk mengatur struktur objek database
+                    seperti <code>CREATE</code>, <code>ALTER</code>, dan <code>DROP</code>.</p>
+                <p><strong>DML (Data Manipulation Language)</strong> digunakan untuk mengelola data di dalam tabel
+                    seperti <code>INSERT</code>, <code>UPDATE</code>, dan <code>DELETE</code>.</p>
+                <ul>
+                    <li><strong>CREATE:</strong> Buat database/tabel/constraint awal.</li>
+                    <li><strong>ALTER:</strong> Ubah struktur (tambah/hapus kolom atau index, dsb.).</li>
+                    <li><strong>DROP:</strong> Hapus objek (tabel/database) – hati-hati karena permanen.</li>
+                    <li><strong>INSERT:</strong> Tambah data.</li>
+                    <li><strong>UPDATE:</strong> Ubah data.</li>
+                    <li><strong>DELETE:</strong> Hapus data.</li>
+                </ul>
+                <p class="text-muted">Gunakan <code>transaction</code> untuk menjaga konsistensi data. Untuk produksi,
+                    pertimbangkan <strong>trigger</strong>, <strong>audit log</strong>, dan <strong>indeks</strong> yang
+                    sesuai kebutuhan.</p>
+            </div>
+        </div>
+
+        <div class="accordion" id="materiDDL_DML">
+            <a class="btn btn-primary" href="tugas.html" role="button">Tugas</a>
+
+            <br>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="createHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#create">
+                        A. DDL – CREATE (Buat Database & Tabel)
+                    </button>
+                </h2>
+                <div id="create" class="accordion-collapse collapse show" data-bs-parent="#materiDDL_DML">
+                    <div class="accordion-body">
+                        <pre>
+-- 1) Buat database (kalau belum ada) dan pakai
+CREATE DATABASE inventori_smk;
+USE inventori_smk;
+
+-- 2) Buat tabel barang
+--   - stok disimpan di kolom stok (angka bulat)
+CREATE TABLE barang (
+  id_barang INT AUTO_INCREMENT PRIMARY KEY,
+  kode_barang VARCHAR(20) NOT NULL UNIQUE,
+  nama_barang VARCHAR(100) NOT NULL,
+  kategori VARCHAR(50),
+  satuan VARCHAR(10) DEFAULT 'pcs',
+  harga_beli INT DEFAULT 0,
+  harga_jual INT DEFAULT 0,
+  stok INT DEFAULT 0
+);
+
+-- 3) Buat tabel transaksi sederhana
+--   jenis: 'MASUK' atau 'KELUAR'
+CREATE TABLE IF NOT EXISTS transaksi (
+  id_transaksi INT AUTO_INCREMENT PRIMARY KEY,
+  tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
+  jenis VARCHAR(10) NOT NULL,
+  kode_barang VARCHAR(20) NOT NULL,
+  jumlah INT NOT NULL,
+  keterangan VARCHAR(100)
+);
+            </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="alterHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#alter">
+                        B. DDL – ALTER (Ubah Struktur)
+                    </button>
+                </h2>
+                <div id="alter" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
+                    <div class="accordion-body">
+                        <pre>
+-- Tambah kolom barcode pada tabel barang
+ALTER TABLE barang ADD COLUMN barcode VARCHAR(30);
+
+-- Ubah panjang kolom nama_barang agar bisa lebih panjang
+ALTER TABLE barang MODIFY COLUMN nama_barang VARCHAR(150) NOT NULL;
+
+-- Hapus kolom barcode kalau tidak jadi dipakai
+ALTER TABLE barang DROP COLUMN barcode;
+            </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="dropHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#drop">
+                        C. DDL – DROP (Hapus Objek)
+                    </button>
+                </h2>
+                <div id="drop" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
+                    <div class="accordion-body">
+                        <pre>
+-- Hapus tabel transaksi (Menghapus tabel transaksi)
+DROP TABLE transaksi;
+
+-- Buat ulang transaksi supaya contoh lanjutannya jalan
+CREATE TABLE IF NOT EXISTS transaksi (
+  id_transaksi INT AUTO_INCREMENT PRIMARY KEY,
+  tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
+  jenis VARCHAR(10) NOT NULL,
+  kode_barang VARCHAR(20) NOT NULL,
+  jumlah INT NOT NULL,
+  keterangan VARCHAR(100)
+);
+            </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="insertHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#insert">
+                        D. DML – INSERT (Tambah Data)
+                    </button>
+                </h2>
+                <div id="insert" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
+                    <div class="accordion-body">
+                        <pre>
+-- Tambah data barang awal
+INSERT INTO barang (kode_barang, nama_barang, kategori, satuan, harga_beli, harga_jual, stok) VALUES
+ ('ATK-001', 'Pulpen Biru', 'ATK', 'pcs', 2000, 3000, 0),
+ ('ATK-002', 'Buku Tulis A5', 'ATK', 'pcs', 5000, 7000, 0),
+ ('EL-001', 'Mouse USB', 'ELEKTRONIK', 'pcs', 35000, 50000, 0);
+
+-- Tambah transaksi MASUK (barang datang ke gudang)
+INSERT INTO transaksi (jenis, kode_barang, jumlah, keterangan) VALUES
+ ('MASUK', 'ATK-001', 100, 'Stok awal'),
+ ('MASUK', 'ATK-002', 50, 'Stok awal'),
+ ('MASUK', 'EL-001', 30, 'Stok awal');
+
+-- Setelah input transaksi, update stok barang secara sederhana (manual)
+-- Pulpen Biru +100
+UPDATE barang SET stok = stok + 100 WHERE kode_barang = 'ATK-001';
+-- Buku Tulis +50
+UPDATE barang SET stok = stok + 50  WHERE kode_barang = 'ATK-002';
+-- Mouse USB +30
+UPDATE barang SET stok = stok + 30  WHERE kode_barang = 'EL-001';
+            </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="updateHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#update">
+                        E. DML – UPDATE (Ubah Data)
+                    </button>
+                </h2>
+                <div id="update" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
+                    <div class="accordion-body">
+                        <pre>
+-- Ubah harga jual Mouse
+UPDATE barang SET harga_jual = 52000 WHERE kode_barang = 'EL-001';
+
+-- Input transaksi KELUAR (penjualan) 20 Pulpen
+INSERT INTO transaksi (jenis, kode_barang, jumlah, keterangan)
+VALUES ('KELUAR', 'ATK-001', 20, 'Penjualan 1');
+
+-- Kurangi stok karena penjualan
+UPDATE barang SET stok = stok - 20 WHERE kode_barang = 'ATK-001';
+            </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="deleteHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#delete">
+                        F. DML – DELETE (Hapus Data)
+                    </button>
+                </h2>
+                <div id="delete" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
+                    <div class="accordion-body">
+                        <pre>
+-- Hapus satu transaksi yang salah input (misal id_transaksi=2)
+DELETE FROM transaksi WHERE id_transaksi = 2;
+
+-- Hapus barang yang tidak dipakai lagi
+DELETE FROM barang WHERE kode_barang = 'ATK-002';            </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="selectHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#select">
+                        G. BONUS – SELECT (Ambil Data)
+                    </button>
+                </h2>
+                <div id="select" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
+                    <div class="accordion-body">
+                        <pre>
+-- Lihat semua barang dan stoknya
+SELECT kode_barang, nama_barang, kategori, stok, harga_beli, harga_jual
+FROM barang
+ORDER BY nama_barang;
+
+-- Lihat riwayat transaksi terbaru
+SELECT tanggal, jenis, kode_barang, jumlah, keterangan
+FROM transaksi
+ORDER BY tanggal DESC;
+            </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
