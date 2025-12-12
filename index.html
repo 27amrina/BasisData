@@ -2,259 +2,583 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Materi Inventori Barang - DDL & DML</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tingkat 1 — Dasar-Dasar Basis Data</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif
         }
 
-        .card {
-            border-radius: 1rem;
+        h2,
+        h3 {
+            font-weight: 700;
+            margin-top: 1.5rem
         }
 
-        pre {
-            background: #212529;
-            color: #fff;
-            padding: 1rem;
-            border-radius: 0.5rem;
+        .code {
+            white-space: pre;
+            font-family: ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace
         }
     </style>
 </head>
 
-<body>
-
-    <div class="container py-5">
-        <div class="text-center mb-4">
-            <h1 class="fw-bold text-success">Materi DDL & DML</h1>
-            <p class="text-muted">CREATE, ALTER, DROP, INSERT, UPDATE, DELETE</p>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">Basis Data SMK</a>
+            <span class="ms-2">/ Tingkat 1</span>
         </div>
+    </nav>
 
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <h4 class="card-title text-success">1️⃣ Konsep Singkat</h4>
-                <p><strong>DDL (Data Definition Language)</strong> digunakan untuk mengatur struktur objek database
-                    seperti <code>CREATE</code>, <code>ALTER</code>, dan <code>DROP</code>.</p>
-                <p><strong>DML (Data Manipulation Language)</strong> digunakan untuk mengelola data di dalam tabel
-                    seperti <code>INSERT</code>, <code>UPDATE</code>, dan <code>DELETE</code>.</p>
-                <ul>
-                    <li><strong>CREATE:</strong> Buat database/tabel/constraint awal.</li>
-                    <li><strong>ALTER:</strong> Ubah struktur (tambah/hapus kolom atau index, dsb.).</li>
-                    <li><strong>DROP:</strong> Hapus objek (tabel/database) – hati-hati karena permanen.</li>
-                    <li><strong>INSERT:</strong> Tambah data.</li>
-                    <li><strong>UPDATE:</strong> Ubah data.</li>
-                    <li><strong>DELETE:</strong> Hapus data.</li>
-                </ul>
-                <p class="text-muted">Gunakan <code>transaction</code> untuk menjaga konsistensi data. Untuk produksi,
-                    pertimbangkan <strong>trigger</strong>, <strong>audit log</strong>, dan <strong>indeks</strong> yang
-                    sesuai kebutuhan.</p>
-            </div>
-        </div>
+    <main class="container my-5">
+        <h1 class="fw-bold mb-4 text-center">🧩 Tingkat 1 — Dasar-Dasar Basis Data</h1>
 
-        <div class="accordion" id="materiDDL_DML">
-            <a class="btn btn-primary" href="tugas.html" role="button">Tugas</a>
+        <section class="mb-5">
+            <h2>🎯 Tujuan Pembelajaran</h2>
+            <p>Memahami apa itu <strong>data</strong>, bagaimana cara menyimpannya, dan mengenal komponen dasar dalam
+                sebuah
+                <strong>basis data</strong> agar siswa dapat mengelola informasi dengan benar dan efisien.
+            </p>
+        </section>
 
-            <br>
+        <section class="mb-5">
+            <h2>📚 Materi</h2>
+            <div class="accordion" id="materi1">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#m1">
+                            1. Pengertian Data, Informasi, Basis Data, dan DBMS
+                        </button>
+                    </h2>
+                    <div id="m1" class="accordion-collapse collapse show" data-bs-parent="#materi1">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Data</strong> adalah fakta mentah, seperti angka atau teks tanpa konteks
+                                    (contoh: 90, “Ani”).</li>
+                                <li><strong>Informasi</strong> adalah data yang telah diolah dan memiliki makna (contoh:
+                                    Nilai Matematika Ani = 90).</li>
+                                <li><strong>Basis Data</strong> adalah kumpulan data terorganisasi yang mudah diakses.
+                                </li>
+                                <li><strong>DBMS</strong> adalah software untuk mengelola basis data (MySQL, PostgreSQL,
+                                    SQLite).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="createHeading">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#create">
-                        A. DDL – CREATE (Buat Database & Tabel)
-                    </button>
-                </h2>
-                <div id="create" class="accordion-collapse collapse show" data-bs-parent="#materiDDL_DML">
-                    <div class="accordion-body">
-                        <pre>
--- 1) Buat database (kalau belum ada) dan pakai
-CREATE DATABASE inventori_smk;
-USE inventori_smk;
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#m2">
+                            2. Komponen Basis Data
+                        </button>
+                    </h2>
+                    <div id="m2" class="accordion-collapse collapse" data-bs-parent="#materi1">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Tabel</strong> — baris dan kolom.</li>
+                                <li><strong>Record</strong> — baris data.</li>
+                                <li><strong>Field</strong> — kolom data.</li>
+                                <li><strong>Primary Key</strong> — kolom unik pembeda record.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
--- 2) Buat tabel barang
---   - stok disimpan di kolom stok (angka bulat)
-CREATE TABLE barang (
-  id_barang INT AUTO_INCREMENT PRIMARY KEY,
-  kode_barang VARCHAR(20) NOT NULL UNIQUE,
-  nama_barang VARCHAR(100) NOT NULL,
-  kategori VARCHAR(50),
-  satuan VARCHAR(10) DEFAULT 'pcs',
-  harga_beli INT DEFAULT 0,
-  harga_jual INT DEFAULT 0,
-  stok INT DEFAULT 0
-);
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#m3">
+                            3. Jenis-jenis DBMS
+                        </button>
+                    </h2>
+                    <div id="m3" class="accordion-collapse collapse" data-bs-parent="#materi1">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>MySQL</strong> — populer untuk web & pendidikan.</li>
+                                <li><strong>PostgreSQL</strong> — fitur lanjutan.</li>
+                                <li><strong>SQLite</strong> — ringan untuk mobile/desktop.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
--- 3) Buat tabel transaksi sederhana
---   jenis: 'MASUK' atau 'KELUAR'
-CREATE TABLE IF NOT EXISTS transaksi (
-  id_transaksi INT AUTO_INCREMENT PRIMARY KEY,
-  tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
-  jenis VARCHAR(10) NOT NULL,
-  kode_barang VARCHAR(20) NOT NULL,
-  jumlah INT NOT NULL,
-  keterangan VARCHAR(100)
-);
-            </pre>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#m4">
+                            4. Fungsi Basis Data di Dunia Nyata
+                        </button>
+                    </h2>
+                    <div id="m4" class="accordion-collapse collapse" data-bs-parent="#materi1">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Sekolah</strong>: siswa, nilai, absensi.</li>
+                                <li><strong>Toko</strong>: stok & transaksi.</li>
+                                <li><strong>Perpustakaan</strong>: peminjaman & pengembalian.</li>
+                                <li><strong>Kasir</strong>: pencatatan transaksi otomatis.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="alterHeading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#alter">
-                        B. DDL – ALTER (Ubah Struktur)
-                    </button>
-                </h2>
-                <div id="alter" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
-                    <div class="accordion-body">
-                        <pre>
--- Tambah kolom barcode pada tabel barang
-ALTER TABLE barang ADD COLUMN barcode VARCHAR(30);
+        <section class="mb-5">
+            <h2>🧮 Latihan</h2>
+            <ol>
+                <li>Gambarlah tabel data siswa: <code>NIS</code>, <code>Nama</code>, <code>Kelas</code>,
+                    <code>Alamat</code>.
+                </li>
+                <li>Tentukan Primary Key (Jawaban: NIS).</li>
+                <li>Buat tabel lain untuk mapel dan nilai.</li>
+            </ol>
+        </section>
 
--- Ubah panjang kolom nama_barang agar bisa lebih panjang
-ALTER TABLE barang MODIFY COLUMN nama_barang VARCHAR(150) NOT NULL;
+        <!-- ================= SIMULATOR (asli kamu) ================= -->
+        <section class="mb-5">
+            <h2>🧪 Simulator Desain Tabel</h2>
+            <p class="text-muted">Tambahkan kolom, pilih tipe data, dan tetapkan Primary Key. Klik <em>Validasi</em>.
+            </p>
 
--- Hapus kolom barcode kalau tidak jadi dipakai
-ALTER TABLE barang DROP COLUMN barcode;
-            </pre>
+            <ul class="nav nav-tabs" id="simTabs" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab"
+                        data-bs-target="#tSiswa" type="button" role="tab">Tabel <strong>siswa</strong></button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab"
+                        data-bs-target="#tMapel" type="button" role="tab">Tabel <strong>mapel</strong></button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab"
+                        data-bs-target="#tNilai" type="button" role="tab">Tabel <strong>nilai</strong></button></li>
+            </ul>
+
+            <div class="tab-content border border-top-0 rounded-bottom p-3 bg-white shadow-sm">
+                <!-- SISWA -->
+                <div class="tab-pane fade show active" id="tSiswa" role="tabpanel">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-sm btn-outline-primary" data-prefill="siswa">Auto Isi Sesuai
+                            Soal</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-addrow="siswa">Tambah Kolom</button>
+                        <button class="btn btn-sm btn-success" data-validate="siswa">Validasi</button>
+                        <button class="btn btn-sm btn-outline-success" data-export="siswa">Export SQL</button>
+                        <button class="btn btn-sm btn-outline-danger" data-clear="siswa">Bersihkan</button>
                     </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle" id="tbl-siswa">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nama Kolom</th>
+                                    <th>Tipe</th>
+                                    <th>PK</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="msg-siswa"></div>
+                    <h6 class="mt-3">SQL</h6>
+                    <pre class="code border rounded p-3 bg-light" id="sql-siswa"></pre>
+                </div>
+
+                <!-- MAPEL -->
+                <div class="tab-pane fade" id="tMapel" role="tabpanel">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-sm btn-outline-primary" data-prefill="mapel">Auto Isi Contoh</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-addrow="mapel">Tambah Kolom</button>
+                        <button class="btn btn-sm btn-success" data-validate="mapel">Validasi</button>
+                        <button class="btn btn-sm btn-outline-success" data-export="mapel">Export SQL</button>
+                        <button class="btn btn-sm btn-outline-danger" data-clear="mapel">Bersihkan</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle" id="tbl-mapel">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nama Kolom</th>
+                                    <th>Tipe</th>
+                                    <th>PK</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="msg-mapel"></div>
+                    <h6 class="mt-3">SQL</h6>
+                    <pre class="code border rounded p-3 bg-light" id="sql-mapel"></pre>
+                </div>
+
+                <!-- NILAI -->
+                <div class="tab-pane fade" id="tNilai" role="tabpanel">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-sm btn-outline-primary" data-prefill="nilai">Auto Isi Contoh</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-addrow="nilai">Tambah Kolom</button>
+                        <button class="btn btn-sm btn-success" data-validate="nilai">Validasi</button>
+                        <button class="btn btn-sm btn-outline-success" data-export="nilai">Export SQL</button>
+                        <button class="btn btn-sm btn-outline-danger" data-clear="nilai">Bersihkan</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle" id="tbl-nilai">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nama Kolom</th>
+                                    <th>Tipe</th>
+                                    <th>PK</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="msg-nilai"></div>
+                    <h6 class="mt-3">SQL</h6>
+                    <pre class="code border rounded p-3 bg-light" id="sql-nilai"></pre>
                 </div>
             </div>
+        </section>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="dropHeading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#drop">
-                        C. DDL – DROP (Hapus Objek)
-                    </button>
-                </h2>
-                <div id="drop" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
-                    <div class="accordion-body">
-                        <pre>
--- Hapus tabel transaksi (Menghapus tabel transaksi)
-DROP TABLE transaksi;
-
--- Buat ulang transaksi supaya contoh lanjutannya jalan
-CREATE TABLE IF NOT EXISTS transaksi (
-  id_transaksi INT AUTO_INCREMENT PRIMARY KEY,
-  tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
-  jenis VARCHAR(10) NOT NULL,
-  kode_barang VARCHAR(20) NOT NULL,
-  jumlah INT NOT NULL,
-  keterangan VARCHAR(100)
-);
-            </pre>
-                    </div>
-                </div>
+        <!-- ================= KUIS (1x SAJA) ================= -->
+        <section class="mb-5">
+            <h2>🧠 Kuis Interaktif</h2>
+            <p>Pilih jawaban yang benar:</p>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="q1" id="q1a">
+                <label class="form-check-label" for="q1a">Informasi adalah kumpulan data mentah.</label>
             </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="insertHeading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#insert">
-                        D. DML – INSERT (Tambah Data)
-                    </button>
-                </h2>
-                <div id="insert" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
-                    <div class="accordion-body">
-                        <pre>
--- Tambah data barang awal
-INSERT INTO barang (kode_barang, nama_barang, kategori, satuan, harga_beli, harga_jual, stok) VALUES
- ('ATK-001', 'Pulpen Biru', 'ATK', 'pcs', 2000, 3000, 0),
- ('ATK-002', 'Buku Tulis A5', 'ATK', 'pcs', 5000, 7000, 0),
- ('EL-001', 'Mouse USB', 'ELEKTRONIK', 'pcs', 35000, 50000, 0);
-
--- Tambah transaksi MASUK (barang datang ke gudang)
-INSERT INTO transaksi (jenis, kode_barang, jumlah, keterangan) VALUES
- ('MASUK', 'ATK-001', 100, 'Stok awal'),
- ('MASUK', 'ATK-002', 50, 'Stok awal'),
- ('MASUK', 'EL-001', 30, 'Stok awal');
-
--- Setelah input transaksi, update stok barang secara sederhana (manual)
--- Pulpen Biru +100
-UPDATE barang SET stok = stok + 100 WHERE kode_barang = 'ATK-001';
--- Buku Tulis +50
-UPDATE barang SET stok = stok + 50  WHERE kode_barang = 'ATK-002';
--- Mouse USB +30
-UPDATE barang SET stok = stok + 30  WHERE kode_barang = 'EL-001';
-            </pre>
-                    </div>
-                </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="q1" id="q1b">
+                <label class="form-check-label" for="q1b">Primary key digunakan untuk membedakan setiap record.</label>
             </div>
+            <button class="btn btn-primary mt-3" id="cek1">Cek Jawaban</button>
+            <div class="mt-3" id="hasil1"></div>
+        </section>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="updateHeading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#update">
-                        E. DML – UPDATE (Ubah Data)
-                    </button>
-                </h2>
-                <div id="update" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
-                    <div class="accordion-body">
-                        <pre>
--- Ubah harga jual Mouse
-UPDATE barang SET harga_jual = 52000 WHERE kode_barang = 'EL-001';
+        <!-- ================= KARTU ISTILAH ================= -->
+        <section class="mb-5">
+            <h2>🧩 Aktivitas Interaktif — Kartu Istilah</h2>
+            <p class="text-muted">Klik setiap kartu untuk melihat penjelasannya.</p>
+            <div class="row g-3" id="cards"></div>
+        </section>
 
--- Input transaksi KELUAR (penjualan) 20 Pulpen
-INSERT INTO transaksi (jenis, kode_barang, jumlah, keterangan)
-VALUES ('KELUAR', 'ATK-001', 20, 'Penjualan 1');
+        <!-- ================= ASESMEN 10 SOAL (SATU-SATU + LOCALSTORAGE) ================= -->
+        <section class="mb-5" id="asesmen-satu">
+            <h2>📝 Asesmen</h2>
+            <p class="text-muted">Jawaban tersimpan otomatis di perangkat (localStorage).</p>
 
--- Kurangi stok karena penjualan
-UPDATE barang SET stok = stok - 20 WHERE kode_barang = 'ATK-001';
-            </pre>
-                    </div>
+            <div class="bg-white border rounded-3 p-3 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong id="as-progress">Soal 1/10</strong>
+                    <span class="small text-muted" id="as-status">Tersimpan otomatis</span>
                 </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="deleteHeading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#delete">
-                        F. DML – DELETE (Hapus Data)
-                    </button>
-                </h2>
-                <div id="delete" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
-                    <div class="accordion-body">
-                        <pre>
--- Hapus satu transaksi yang salah input (misal id_transaksi=2)
-DELETE FROM transaksi WHERE id_transaksi = 2;
+                <div id="as-question" class="fw-semibold mb-3"></div>
+                <div id="as-options" class="vstack gap-2 mb-3"></div>
 
--- Hapus barang yang tidak dipakai lagi
-DELETE FROM barang WHERE kode_barang = 'ATK-002';            </pre>
-                    </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-secondary" type="button" id="as-prev">← Sebelumnya</button>
+                    <button class="btn btn-primary" type="button" id="as-next">Berikutnya →</button>
+                    <button class="btn btn-success d-none" type="button" id="as-finish">Selesai & Nilai</button>
+                    <button class="btn btn-outline-danger ms-auto" type="button" id="as-reset">Reset Jawaban</button>
                 </div>
+
+                <div id="as-result" class="mt-3"></div>
             </div>
+        </section>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="selectHeading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#select">
-                        G. BONUS – SELECT (Ambil Data)
-                    </button>
-                </h2>
-                <div id="select" class="accordion-collapse collapse" data-bs-parent="#materiDDL_DML">
-                    <div class="accordion-body">
-                        <pre>
--- Lihat semua barang dan stoknya
-SELECT kode_barang, nama_barang, kategori, stok, harga_beli, harga_jual
-FROM barang
-ORDER BY nama_barang;
+        <hr>
 
--- Lihat riwayat transaksi terbaru
-SELECT tanggal, jenis, kode_barang, jumlah, keterangan
-FROM transaksi
-ORDER BY tanggal DESC;
-            </pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /* ===================== KUIS (FIXED) ===================== */
+        document.addEventListener('click', (e) => {
+            const cek = e.target.closest('#cek1');
+            if (!cek) return;
+            const benar = document.getElementById('q1b')?.checked;
+            document.getElementById('hasil1').innerHTML = benar
+                ? '<div class="alert alert-success">Benar! Primary key membedakan setiap record.</div>'
+                : '<div class="alert alert-danger">Salah, coba pahami kembali pengertian informasi dan primary key.</div>';
+        });
+
+        /* ===================== KARTU ISTILAH ===================== */
+        (function initCards() {
+            const istilah = [
+                { t: 'Data', d: 'Fakta mentah yang belum diolah.' },
+                { t: 'Informasi', d: 'Data yang telah diolah dan memiliki arti.' },
+                { t: 'Basis Data', d: 'Kumpulan data yang terorganisasi secara sistematis.' },
+                { t: 'DBMS', d: 'Perangkat lunak pengelola basis data, contoh: MySQL.' },
+                { t: 'Tabel', d: 'Struktur utama penyimpanan data berupa baris dan kolom.' },
+                { t: 'Record', d: 'Baris data dalam tabel.' },
+                { t: 'Field', d: 'Kolom data yang memiliki tipe tertentu.' },
+                { t: 'Primary Key', d: 'Kolom unik yang mengidentifikasi setiap record.' }
+            ];
+            const container = document.getElementById('cards');
+            if (!container) return;
+            container.innerHTML = '';
+            istilah.forEach((x, i) => {
+                const div = document.createElement('div');
+                div.className = 'col-6 col-md-3';
+                div.innerHTML = `<div class='border rounded-3 p-3 text-center bg-white shadow-sm' role='button' data-i='${i}'>
+      <strong>${x.t}</strong>
+      <div class='small text-muted mt-2 d-none'>${x.d}</div>
+    </div>`;
+                container.appendChild(div);
+            });
+            container.addEventListener('click', (e) => {
+                const el = e.target.closest('[data-i]');
+                if (!el) return;
+                const desc = el.querySelector('.small');
+                if (desc) desc.classList.toggle('d-none');
+            });
+        })();
+
+        /* ===================== SIMULATOR (ASLI) ===================== */
+        function addRow(tid, name = '', type = 'VARCHAR(100)', pk = false) {
+            const tb = document.querySelector(`#tbl-${tid} tbody`);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+    <td><input class='form-control form-control-sm' value='${name}' placeholder='nama_kolom'></td>
+    <td>
+      <select class='form-select form-select-sm'>
+        <option>VARCHAR(8)</option>
+        <option>VARCHAR(10)</option>
+        <option>VARCHAR(16)</option>
+        <option selected>VARCHAR(100)</option>
+        <option>VARCHAR(200)</option>
+        <option>INT</option>
+        <option>TEXT</option>
+      </select>
+    </td>
+    <td class='text-center'><input type='radio' name='pk-${tid}' ${pk ? 'checked' : ''}></td>
+    <td class='text-end'><button class='btn btn-sm btn-outline-danger' data-del>&times;</button></td>`;
+            tb.appendChild(tr);
+            const sel = tr.querySelector('select');
+            if ([...sel.options].some(o => o.value === type)) sel.value = type;
+        }
+
+        function prefill(tid) {
+            const tb = document.querySelector(`#tbl-${tid} tbody`); if (!tb) return; tb.innerHTML = '';
+            if (tid === 'siswa') {
+                addRow('siswa', 'nis', 'VARCHAR(16)', true);
+                addRow('siswa', 'nama', 'VARCHAR(100)');
+                addRow('siswa', 'kelas', 'VARCHAR(10)');
+                addRow('siswa', 'alamat', 'VARCHAR(200)');
+            }
+            if (tid === 'mapel') {
+                addRow('mapel', 'kode', 'VARCHAR(8)', true);
+                addRow('mapel', 'nama', 'VARCHAR(100)');
+            }
+            if (tid === 'nilai') {
+                addRow('nilai', 'id', 'INT', true);
+                addRow('nilai', 'nis', 'VARCHAR(16)');
+                addRow('nilai', 'kode_mapel', 'VARCHAR(8)');
+                addRow('nilai', 'nilai', 'INT');
+            }
+            renderSQL(tid);
+        }
+
+        function collect(tid) {
+            const rows = [...document.querySelectorAll(`#tbl-${tid} tbody tr`)];
+            const cols = rows.map(r => ({
+                name: r.children[0].querySelector('input').value.trim(),
+                type: r.children[1].querySelector('select').value,
+                pk: r.children[2].querySelector('input').checked
+            })).filter(c => c.name);
+            const pkCol = cols.find(c => c.pk)?.name;
+            return { cols, pk: pkCol };
+        }
+
+        function renderSQL(tid) {
+            const { cols } = collect(tid);
+            let sql = `CREATE TABLE ${tid} (\n`;
+            sql += cols.map(c => `  ${c.name} ${c.type}${c.pk ? ' PRIMARY KEY' : ''}`).join(',\n');
+            sql += `\n);`;
+            const pre = document.getElementById(`sql-${tid}`); if (pre) pre.textContent = sql;
+        }
+
+        function validate(tid) {
+            const res = collect(tid);
+            const msg = document.getElementById(`msg-${tid}`);
+            function show(cls, text) { msg.innerHTML = `<div class='alert ${cls}'>${text}</div>`; }
+
+            if (res.cols.length === 0) return show('alert-danger', 'Tambahkan minimal satu kolom.');
+            const pkCount = res.cols.filter(c => c.pk).length;
+            if (pkCount !== 1) return show('alert-danger', 'Tentukan tepat <strong>1</strong> kolom sebagai Primary Key.');
+
+            if (tid === 'siswa') {
+                const hasNIS = res.cols.some(c => c.name.toLowerCase() === 'nis');
+                if (res.pk?.toLowerCase() === 'nis' && hasNIS) show('alert-success', 'Betul! Primary Key sebaiknya NIS.');
+                else if (hasNIS) show('alert-warning', 'Sebaiknya jadikan NIS sebagai Primary Key.');
+                else show('alert-warning', 'Tambahkan kolom NIS, lalu jadikan sebagai Primary Key.');
+            }
+            if (tid === 'mapel') {
+                const hasKode = res.cols.some(c => c.name.toLowerCase() === 'kode');
+                if (res.pk?.toLowerCase() === 'kode' && hasKode) show('alert-success', 'Bagus! PK \"kode\" sesuai praktik umum.');
+                else show('alert-warning', 'Umumnya kolom PK untuk mapel adalah \"kode\".');
+            }
+            if (tid === 'nilai') {
+                const hasFK = res.cols.some(c => c.name.toLowerCase() === 'nis') && res.cols.some(c => c.name.toLowerCase() === 'kode_mapel');
+                if (hasFK) show('alert-success', 'Struktur nilai sudah mencakup relasi ke siswa & mapel.');
+                else show('alert-warning', 'Pastikan ada kolom nis dan kode_mapel sebagai referensi.');
+            }
+        }
+
+        function exportSQL(tid) {
+            const text = document.getElementById(`sql-${tid}`)?.textContent || '';
+            const blob = new Blob([text], { type: 'text/sql' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${tid}.sql`;
+            a.click();
+        }
+
+        function clearTable(tid) {
+            const tb = document.querySelector(`#tbl-${tid} tbody`); if (!tb) return; tb.innerHTML = '';
+            const pre = document.getElementById(`sql-${tid}`);
+            const msg = document.getElementById(`msg-${tid}`);
+            if (pre) pre.textContent = '';
+            if (msg) msg.innerHTML = '';
+        }
+
+        ['siswa', 'mapel', 'nilai'].forEach(id => {
+            document.addEventListener('click', (e) => {
+                const pre = e.target.closest(`[data-prefill='${id}']`);
+                const add = e.target.closest(`[data-addrow='${id}']`);
+                const val = e.target.closest(`[data-validate='${id}']`);
+                const exp = e.target.closest(`[data-export='${id}']`);
+                const clr = e.target.closest(`[data-clear='${id}']`);
+                const del = e.target.closest(`#tbl-${id} [data-del]`);
+                if (pre) { e.preventDefault(); prefill(id); }
+                if (add) { e.preventDefault(); addRow(id); }
+                if (val) { e.preventDefault(); validate(id); }
+                if (exp) { e.preventDefault(); exportSQL(id); }
+                if (clr) { e.preventDefault(); clearTable(id); }
+                if (del) { e.preventDefault(); del.closest('tr').remove(); renderSQL(id); }
+            });
+            document.addEventListener('input', (e) => {
+                if (e.target.closest(`#tbl-${id}`)) renderSQL(id);
+            });
+        });
+        prefill('siswa');
+
+        /* ===================== ASESMEN (SATU-SATU + LOCALSTORAGE) ===================== */
+        (function initAsesmen() {
+            const LS_KEY_ANS = "tingkat1_asesmen_v1_answers";
+            const LS_KEY_IDX = "tingkat1_asesmen_v1_index";
+
+            const soal = [
+                { t: "Yang dimaksud dengan data adalah …", o: { A: "Informasi yang sudah diolah", B: "Fakta mentah yang belum memiliki makna", C: "Laporan hasil pengolahan", D: "Kesimpulan dari informasi" }, k: "B" },
+                { t: "Contoh yang termasuk informasi adalah …", o: { A: "85", B: "Ani", C: "Nilai Matematika Ani = 85", D: "Angka dan huruf" }, k: "C" },
+                { t: "Basis data (database) adalah …", o: { A: "Program untuk mengolah kata", B: "Kumpulan data yang tersimpan tanpa aturan", C: "Kumpulan data yang terorganisasi dan mudah diakses", D: "File teks biasa" }, k: "C" },
+                { t: "Perangkat lunak yang digunakan untuk mengelola basis data disebut …", o: { A: "Spreadsheet", B: "Compiler", C: "DBMS", D: "Browser" }, k: "C" },
+                { t: "Berikut ini yang bukan contoh DBMS adalah …", o: { A: "MySQL", B: "PostgreSQL", C: "SQLite", D: "Microsoft Word" }, k: "D" },
+                { t: "Dalam tabel basis data, baris data disebut …", o: { A: "Field", B: "Kolom", C: "Record", D: "Primary key" }, k: "C" },
+                { t: "Kolom yang digunakan untuk membedakan setiap record disebut …", o: { A: "Field", B: "Record", C: "Primary Key", D: "Foreign Key" }, k: "C" },
+                { t: "Pada tabel siswa, kolom yang paling tepat dijadikan Primary Key adalah …", o: { A: "Nama", B: "Kelas", C: "Alamat", D: "NIS" }, k: "D" },
+                { t: "Tipe data yang cocok untuk menyimpan nilai angka seperti nilai ujian adalah …", o: { A: "VARCHAR", B: "TEXT", C: "INT", D: "DATE" }, k: "C" },
+                { t: "Fungsi utama basis data di sekolah adalah …", o: { A: "Menghias tampilan komputer", B: "Menyimpan dan mengelola data siswa, guru, dan nilai", C: "Mengedit gambar", D: "Menjalankan permainan" }, k: "B" },
+            ];
+
+            const elProgress = document.getElementById("as-progress");
+            const elStatus = document.getElementById("as-status");
+            const elQ = document.getElementById("as-question");
+            const elOpts = document.getElementById("as-options");
+            const elResult = document.getElementById("as-result");
+
+            const btnPrev = document.getElementById("as-prev");
+            const btnNext = document.getElementById("as-next");
+            const btnFinish = document.getElementById("as-finish");
+            const btnReset = document.getElementById("as-reset");
+
+            if (!elProgress || !elQ || !elOpts || !btnPrev || !btnNext || !btnFinish || !btnReset) return;
+
+            function loadAnswers() {
+                try { return JSON.parse(localStorage.getItem(LS_KEY_ANS) || "{}"); }
+                catch { return {}; }
+            }
+            function saveAnswers(ans) { localStorage.setItem(LS_KEY_ANS, JSON.stringify(ans)); }
+            function loadIndex() {
+                const n = parseInt(localStorage.getItem(LS_KEY_IDX), 10);
+                return Number.isFinite(n) ? Math.max(0, Math.min(soal.length - 1, n)) : 0;
+            }
+            function saveIndex(i) { localStorage.setItem(LS_KEY_IDX, String(i)); }
+
+            let idx = loadIndex();
+            let ans = loadAnswers();
+
+            function render() {
+                const total = soal.length;
+                const s = soal[idx];
+                elProgress.textContent = `Soal ${idx + 1}/${total}`;
+                elQ.textContent = `${idx + 1}. ${s.t}`;
+
+                const picked = ans[idx] || null;
+                elOpts.innerHTML = "";
+                Object.entries(s.o).forEach(([key, label]) => {
+                    const id = `as-q${idx + 1}-${key}`;
+                    const div = document.createElement("div");
+                    div.className = "form-check";
+                    div.innerHTML = `
+        <input class="form-check-input" type="radio" name="as-q${idx + 1}" id="${id}" value="${key}" ${picked === key ? "checked" : ""}>
+        <label class="form-check-label" for="${id}">${key}. ${label}</label>
+      `;
+                    elOpts.appendChild(div);
+                });
+
+                btnPrev.disabled = idx === 0;
+                const isLast = idx === total - 1;
+                btnNext.classList.toggle("d-none", isLast);
+                btnFinish.classList.toggle("d-none", !isLast);
+
+                if (elStatus) elStatus.textContent = "Tersimpan otomatis";
+            }
+
+            elOpts.addEventListener("change", (e) => {
+                const input = e.target.closest("input[type='radio']");
+                if (!input) return;
+                ans[idx] = input.value;
+                saveAnswers(ans);
+                if (elStatus) {
+                    elStatus.textContent = "Jawaban tersimpan ✅";
+                    setTimeout(() => elStatus.textContent = "Tersimpan otomatis", 800);
+                }
+            });
+
+            btnPrev.addEventListener("click", () => {
+                if (idx > 0) { idx--; saveIndex(idx); render(); elResult.innerHTML = ""; }
+            });
+
+            btnNext.addEventListener("click", () => {
+                if (idx < soal.length - 1) { idx++; saveIndex(idx); render(); elResult.innerHTML = ""; }
+            });
+
+            btnFinish.addEventListener("click", () => {
+                let benar = 0;
+                for (let i = 0; i < soal.length; i++) {
+                    if (ans[i] === soal[i].k) benar++;
+                }
+                const skor = Math.round((benar / soal.length) * 100);
+                elResult.innerHTML = `
+      <div class="alert ${skor >= 75 ? "alert-success" : "alert-warning"}">
+        <strong>Skor:</strong> ${skor}/100 • <strong>Benar:</strong> ${benar} dari ${soal.length}
+      </div>
+    `;
+            });
+
+            btnReset.addEventListener("click", () => {
+                if (!confirm("Reset jawaban asesmen?")) return;
+                localStorage.removeItem(LS_KEY_ANS);
+                localStorage.removeItem(LS_KEY_IDX);
+                ans = {};
+                idx = 0;
+                render();
+                elResult.innerHTML = "";
+            });
+
+            render();
+        })();
+    </script>
+
 </body>
 
 </html>
